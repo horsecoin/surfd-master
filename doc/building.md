@@ -36,12 +36,15 @@ will build out of the box without further effort:
         cmake \
         g++ \
         git \
+        libbz2-dev \
+        libsnappy-dev \
         libssl-dev \
         libtool \
         make \
         pkg-config \
         python3 \
         python3-jinja2
+        make \
 
     # Boost packages (also required)
     sudo apt-get install -y \
