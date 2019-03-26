@@ -1,0 +1,7 @@
+# mainnet
+
+# surf seed01
+seed-node = 51.15.223.10:2001
+
+# surf seed02
+seed-node = 51.15.120.228:2001
