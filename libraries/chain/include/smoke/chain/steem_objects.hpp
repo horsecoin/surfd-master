@@ -1,9 +1,9 @@
 #pragma once
 
 #include <surf/protocol/authority.hpp>
-#include <surf/protocol/steem_operations.hpp>
+#include <surf/protocol/surf_operations.hpp>
 
-#include <surf/chain/steem_object_types.hpp>
+#include <surf/chain/surf_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 #include <boost/multiprecision/cpp_int.hpp>
@@ -36,7 +36,7 @@ namespace surf { namespace chain {
          account_name_type agent;
          time_point_sec    ratification_deadline;
          time_point_sec    escrow_expiration;
-         asset             steem_balance;
+         asset             surf_balance;
          asset             pending_fee;
          bool              to_approved = false;
          bool              agent_approved = false;
@@ -226,7 +226,7 @@ CHAINBASE_SET_INDEX_TYPE( surf::chain::withdraw_vesting_route_object, surf::chai
 FC_REFLECT( surf::chain::escrow_object,
              (id)(escrow_id)(from)(to)(agent)
              (ratification_deadline)(escrow_expiration)
-             (steem_balance)(pending_fee)
+             (surf_balance)(pending_fee)
              (to_approved)(agent_approved)(disputed) )
 CHAINBASE_SET_INDEX_TYPE( surf::chain::escrow_object, surf::chain::escrow_index )
 

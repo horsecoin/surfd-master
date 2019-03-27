@@ -27,7 +27,7 @@
 #include <surf/protocol/exceptions.hpp>
 
 #include <surf/chain/database.hpp>
-#include <surf/chain/steem_objects.hpp>
+#include <surf/chain/surf_objects.hpp>
 #include <surf/chain/history_object.hpp>
 
 #include <surf/account_history/account_history_plugin.hpp>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <surf/app/application.hpp>
-#include <surf/app/steem_api_objects.hpp>
+#include <surf/app/surf_api_objects.hpp>
 
 #include <surf/follow/follow_objects.hpp>
 

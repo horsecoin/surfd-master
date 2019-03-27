@@ -3,8 +3,8 @@
 #include <surf/app/state.hpp>
 
 #include <surf/chain/database.hpp>
-#include <surf/chain/steem_objects.hpp>
-#include <surf/chain/steem_object_types.hpp>
+#include <surf/chain/surf_objects.hpp>
+#include <surf/chain/surf_object_types.hpp>
 #include <surf/chain/history_object.hpp>
 
 #include <surf/tags/tags_plugin.hpp>

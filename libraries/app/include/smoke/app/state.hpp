@@ -1,10 +1,10 @@
 #pragma once
 #include <surf/app/applied_operation.hpp>
-#include <surf/app/steem_api_objects.hpp>
+#include <surf/app/surf_api_objects.hpp>
 
 #include <surf/chain/global_property_object.hpp>
 #include <surf/chain/account_object.hpp>
-#include <surf/chain/steem_objects.hpp>
+#include <surf/chain/surf_objects.hpp>
 
 namespace surf { namespace app {
    using std::string;
@@ -77,7 +77,7 @@ namespace surf { namespace app {
       extended_account(){}
       extended_account( const account_object& a, const database& db ):account_api_obj( a, db ){}
 
-      asset                                   vesting_balance; /// convert vesting_shares to vesting steem
+      asset                                   vesting_balance; /// convert vesting_shares to vesting surf
       share_type                              reputation = 0;
       map<uint64_t,applied_operation>         transfer_history; /// transfer to/from vesting
       map<uint64_t,applied_operation>         post_history;

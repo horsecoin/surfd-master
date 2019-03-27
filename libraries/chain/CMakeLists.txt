@@ -22,9 +22,9 @@ add_library( surf_chain
              fork_database.cpp
              witness_schedule.cpp
 
-             steem_evaluator.cpp
+             surf_evaluator.cpp
 
-             steem_objects.cpp
+             surf_objects.cpp
              shared_authority.cpp
              block_log.cpp
 

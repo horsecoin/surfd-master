@@ -6,7 +6,7 @@ ulimit -c unlimited
 # if we're not using PaaS mode then start surfd traditionally with sv to control it
 if [[ ! "$USE_PAAS" ]]; then
   mkdir -p /etc/service/surfd
-  cp /usr/local/bin/steem-sv-run.sh /etc/service/surfd/run
+  cp /usr/local/bin/surf-sv-run.sh /etc/service/surfd/run
   chmod +x /etc/service/surfd/run
   runsv /etc/service/surfd
 else

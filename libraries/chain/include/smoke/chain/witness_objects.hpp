@@ -1,9 +1,9 @@
 #pragma once
 
 #include <surf/protocol/authority.hpp>
-#include <surf/protocol/steem_operations.hpp>
+#include <surf/protocol/surf_operations.hpp>
 
-#include <surf/chain/steem_object_types.hpp>
+#include <surf/chain/surf_object_types.hpp>
 
 #include <boost/multi_index/composite_key.hpp>
 
@@ -108,7 +108,7 @@ namespace surf { namespace chain {
          digest_type       last_work;
 
          /**
-          * This field represents the Steem blockchain version the witness is running.
+          * This field represents the Surf blockchain version the witness is running.
           */
          version           running_version;
 

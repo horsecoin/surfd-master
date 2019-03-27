@@ -30,7 +30,7 @@
 #include <surf/chain/database_exceptions.hpp>
 #include <surf/chain/generic_custom_operation_interpreter.hpp>
 #include <surf/chain/index.hpp>
-#include <surf/chain/steem_objects.hpp>
+#include <surf/chain/surf_objects.hpp>
 
 #include <fc/time.hpp>
 

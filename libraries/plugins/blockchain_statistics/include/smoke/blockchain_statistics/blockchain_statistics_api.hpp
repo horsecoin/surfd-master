@@ -22,7 +22,7 @@ struct statistics
    uint32_t             operations = 0;                              ///< Operations evaluated
    uint32_t             transactions = 0;                            ///< Transactions processed
    uint32_t             transfers = 0;                               ///< Account to account transfers
-   share_type           steem_transferred = 0;                       ///< SURF transferred from account to account
+   share_type           surf_transferred = 0;                       ///< SURF transferred from account to account
    uint32_t             accounts_created = 0;                        ///< Total accounts created
    uint32_t             paid_accounts_created = 0;                   ///< Accounts created with fee
    uint32_t             mined_accounts_created = 0;                  ///< Accounts mined for free
@@ -45,11 +45,11 @@ struct statistics
    uint32_t             new_reply_votes = 0;                         ///< New votes on replies
    uint32_t             changed_reply_votes = 0;                     ///< Changed votes on replies
    uint32_t             payouts = 0;                                 ///< Number of comment payouts
-   share_type           steem_paid_to_authors = 0;                   ///< Ammount of SURF paid to authors
+   share_type           surf_paid_to_authors = 0;                   ///< Ammount of SURF paid to authors
    share_type           vests_paid_to_authors = 0;                   ///< Ammount of VESS paid to authors
    share_type           vests_paid_to_curators = 0;                  ///< Ammount of VESTS paid to curators
    uint32_t             transfers_to_vesting = 0;                    ///< Transfers of SURF into VESTS
-   share_type           steem_vested = 0;                            ///< Ammount of SURF vested
+   share_type           surf_vested = 0;                            ///< Ammount of SURF vested
    uint32_t             new_vesting_withdrawal_requests = 0;         ///< New vesting withdrawal requests
    uint32_t             modified_vesting_withdrawal_requests = 0;    ///< Changes to vesting withdrawal requests
    share_type           vesting_withdraw_rate_delta = 0;
@@ -57,7 +57,7 @@ struct statistics
    uint32_t             finished_vesting_withdrawals = 0;            ///< Processed vesting withdrawals that are now finished
    share_type           vests_withdrawn = 0;                         ///< Ammount of VESTS withdrawn to SURF
    share_type           vests_transferred = 0;                       ///< Ammount of VESTS transferred to another account
-   share_type           steem_converted = 0;                         ///< Amount of SURF that was converted
+   share_type           surf_converted = 0;                         ///< Amount of SURF that was converted
 
    statistics& operator += ( const bucket_object& b );
 };
@@ -102,7 +102,7 @@ FC_REFLECT( surf::blockchain_statistics::statistics,
    (operations)
    (transactions)
    (transfers)
-   (steem_transferred)
+   (surf_transferred)
    (accounts_created)
    (paid_accounts_created)
    (mined_accounts_created)
@@ -125,11 +125,11 @@ FC_REFLECT( surf::blockchain_statistics::statistics,
    (new_reply_votes)
    (changed_reply_votes)
    (payouts)
-   (steem_paid_to_authors)
+   (surf_paid_to_authors)
    (vests_paid_to_authors)
    (vests_paid_to_curators)
    (transfers_to_vesting)
-   (steem_vested)
+   (surf_vested)
    (new_vesting_withdrawal_requests)
    (modified_vesting_withdrawal_requests)
    (vesting_withdraw_rate_delta)
@@ -137,7 +137,7 @@ FC_REFLECT( surf::blockchain_statistics::statistics,
    (finished_vesting_withdrawals)
    (vests_withdrawn)
    (vests_transferred)
-   (steem_converted)
+   (surf_converted)
 )
 
 

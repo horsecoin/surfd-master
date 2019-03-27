@@ -1,4 +1,4 @@
-#include <surf/protocol/steem_operations.hpp>
+#include <surf/protocol/surf_operations.hpp>
 
 #include <surf/chain/block_summary_object.hpp>
 #include <surf/chain/compound.hpp>
@@ -10,8 +10,8 @@
 #include <surf/chain/global_property_object.hpp>
 #include <surf/chain/history_object.hpp>
 #include <surf/chain/index.hpp>
-#include <surf/chain/steem_evaluator.hpp>
-#include <surf/chain/steem_objects.hpp>
+#include <surf/chain/surf_evaluator.hpp>
+#include <surf/chain/surf_objects.hpp>
 #include <surf/chain/transaction_object.hpp>
 #include <surf/chain/shared_db_merkle.hpp>
 #include <surf/chain/operation_notification.hpp>
@@ -42,7 +42,7 @@ struct reward_fund_context
 {
    uint128_t   recent_claims = 0;
    asset       reward_balance = asset( 0, SURF_SYMBOL );
-   share_type  steem_awarded = 0;
+   share_type  surf_awarded = 0;
 };
 
 class database_impl
@@ -903,7 +903,7 @@ asset database::create_vesting( const account_object& to_account, asset surf, bo
       const auto& cprops = get_dynamic_global_properties();
 
       /**
-       *  The ratio of total_vesting_shares / total_vesting_fund_steem should not
+       *  The ratio of total_vesting_shares / total_vesting_fund_surf should not
        *  change as the result of the user adding funds
        *
        *  V / C  = (V+Vn) / (C+Cn)
@@ -922,7 +922,7 @@ asset database::create_vesting( const account_object& to_account, asset surf, bo
          if( to_reward_balance )
          {
             to.reward_vesting_balance += new_vesting;
-            to.reward_vesting_steem += surf;
+            to.reward_vesting_surf += surf;
          }
          else
             to.vesting_shares += new_vesting;
@@ -933,11 +933,11 @@ asset database::create_vesting( const account_object& to_account, asset surf, bo
          if( to_reward_balance )
          {
             props.pending_rewarded_vesting_shares += new_vesting;
-            props.pending_rewarded_vesting_steem += surf;
+            props.pending_rewarded_vesting_surf += surf;
          }
          else
          {
-            props.total_vesting_fund_steem += surf;
+            props.total_vesting_fund_surf += surf;
             props.total_vesting_shares += new_vesting;
          }
       } );
@@ -1055,23 +1055,23 @@ void database::clear_witness_votes( const account_object& a )
 void database::clear_null_account_balance()
 {
    const auto& null_account = get_account( SURF_NULL_ACCOUNT );
-   asset total_steem( 0, SURF_SYMBOL );
+   asset total_surf( 0, SURF_SYMBOL );
 
    if( null_account.balance.amount > 0 )
    {
-      total_steem += null_account.balance;
+      total_surf += null_account.balance;
       adjust_balance( null_account, -null_account.balance );
    }
 
    if( null_account.vesting_shares.amount > 0 )
    {
       const auto& gpo = get_dynamic_global_properties();
-      auto converted_steem = null_account.vesting_shares * gpo.get_vesting_share_price();
+      auto converted_surf = null_account.vesting_shares * gpo.get_vesting_share_price();
 
       modify( gpo, [&]( dynamic_global_property_object& g )
       {
          g.total_vesting_shares -= null_account.vesting_shares;
-         g.total_vesting_fund_steem -= converted_steem;
+         g.total_vesting_fund_surf -= converted_surf;
       });
 
       modify( null_account, [&]( account_object& a )
@@ -1079,36 +1079,36 @@ void database::clear_null_account_balance()
          a.vesting_shares.amount = 0;
       });
 
-      total_steem += converted_steem;
+      total_surf += converted_surf;
    }
 
-   if( null_account.reward_steem_balance.amount > 0 )
+   if( null_account.reward_surf_balance.amount > 0 )
    {
-      total_steem += null_account.reward_steem_balance;
-      adjust_reward_balance( null_account, -null_account.reward_steem_balance );
+      total_surf += null_account.reward_surf_balance;
+      adjust_reward_balance( null_account, -null_account.reward_surf_balance );
    }
 
    if( null_account.reward_vesting_balance.amount > 0 )
    {
       const auto& gpo = get_dynamic_global_properties();
 
-      total_steem += null_account.reward_vesting_steem;
+      total_surf += null_account.reward_vesting_surf;
 
       modify( gpo, [&]( dynamic_global_property_object& g )
       {
          g.pending_rewarded_vesting_shares -= null_account.reward_vesting_balance;
-         g.pending_rewarded_vesting_steem -= null_account.reward_vesting_steem;
+         g.pending_rewarded_vesting_surf -= null_account.reward_vesting_surf;
       });
 
       modify( null_account, [&]( account_object& a )
       {
-         a.reward_vesting_steem.amount = 0;
+         a.reward_vesting_surf.amount = 0;
          a.reward_vesting_balance.amount = 0;
       });
    }
 
-   if( total_steem.amount > 0 )
-      adjust_supply( -total_steem );
+   if( total_surf.amount > 0 )
+      adjust_supply( -total_surf );
 }
 
 /**
@@ -1171,11 +1171,11 @@ void database::process_vesting_withdrawals()
       else
          to_withdraw = std::min( from_account.vesting_shares.amount, from_account.vesting_withdraw_rate.amount ).value;
 
-      share_type vests_deposited_as_steem = 0;
+      share_type vests_deposited_as_surf = 0;
       share_type vests_deposited_as_vests = 0;
-      asset total_steem_converted = asset( 0, SURF_SYMBOL );
+      asset total_surf_converted = asset( 0, SURF_SYMBOL );
 
-      // Do two passes, the first for vests, the second for steem. Try to maintain as much accuracy for vests as possible.
+      // Do two passes, the first for vests, the second for surf. Try to maintain as much accuracy for vests as possible.
       for( auto itr = didx.upper_bound( boost::make_tuple( from_account.id, account_id_type() ) );
            itr != didx.end() && itr->from_account == from_account.id;
            ++itr )
@@ -1210,37 +1210,37 @@ void database::process_vesting_withdrawals()
             const auto& to_account = get(itr->to_account);
 
             share_type to_deposit = ( ( fc::uint128_t ( to_withdraw.value ) * itr->percent ) / SURF_100_PERCENT ).to_uint64();
-            vests_deposited_as_steem += to_deposit;
-            auto converted_steem = asset( to_deposit, VESTS_SYMBOL ) * cprops.get_vesting_share_price();
-            total_steem_converted += converted_steem;
+            vests_deposited_as_surf += to_deposit;
+            auto converted_surf = asset( to_deposit, VESTS_SYMBOL ) * cprops.get_vesting_share_price();
+            total_surf_converted += converted_surf;
 
             if( to_deposit > 0 )
             {
                modify( to_account, [&]( account_object& a )
                {
-                  a.balance += converted_steem;
+                  a.balance += converted_surf;
                });
 
                modify( cprops, [&]( dynamic_global_property_object& o )
                {
-                  o.total_vesting_fund_steem -= converted_steem;
+                  o.total_vesting_fund_surf -= converted_surf;
                   o.total_vesting_shares.amount -= to_deposit;
                });
 
-               push_virtual_operation( fill_vesting_withdraw_operation( from_account.name, to_account.name, asset( to_deposit, VESTS_SYMBOL), converted_steem ) );
+               push_virtual_operation( fill_vesting_withdraw_operation( from_account.name, to_account.name, asset( to_deposit, VESTS_SYMBOL), converted_surf ) );
             }
          }
       }
 
-      share_type to_convert = to_withdraw - vests_deposited_as_steem - vests_deposited_as_vests;
+      share_type to_convert = to_withdraw - vests_deposited_as_surf - vests_deposited_as_vests;
       FC_ASSERT( to_convert >= 0, "Deposited more vests than were supposed to be withdrawn" );
 
-      auto converted_steem = asset( to_convert, VESTS_SYMBOL ) * cprops.get_vesting_share_price();
+      auto converted_surf = asset( to_convert, VESTS_SYMBOL ) * cprops.get_vesting_share_price();
 
       modify( from_account, [&]( account_object& a )
       {
          a.vesting_shares.amount -= to_withdraw;
-         a.balance += converted_steem;
+         a.balance += converted_surf;
          a.withdrawn += to_withdraw;
 
          if( a.withdrawn >= a.to_withdraw || a.vesting_shares.amount == 0 )
@@ -1256,25 +1256,25 @@ void database::process_vesting_withdrawals()
 
       modify( cprops, [&]( dynamic_global_property_object& o )
       {
-         o.total_vesting_fund_steem -= converted_steem;
+         o.total_vesting_fund_surf -= converted_surf;
          o.total_vesting_shares.amount -= to_convert;
       });
 
       if( to_withdraw > 0 )
          adjust_proxied_witness_votes( from_account, -to_withdraw );
 
-      push_virtual_operation( fill_vesting_withdraw_operation( from_account.name, from_account.name, asset( to_withdraw, VESTS_SYMBOL ), converted_steem ) );
+      push_virtual_operation( fill_vesting_withdraw_operation( from_account.name, from_account.name, asset( to_withdraw, VESTS_SYMBOL ), converted_surf ) );
    }
 }
 
-void database::adjust_total_payout( const comment_object& cur, const asset& total_payout_value, const asset& curator_steem_value, const asset& beneficiary_value )
+void database::adjust_total_payout( const comment_object& cur, const asset& total_payout_value, const asset& curator_surf_value, const asset& beneficiary_value )
 {
   modify( cur, [&]( comment_object& c )
   {
       if( c.total_payout_value.symbol == total_payout_value.symbol ) {
          c.total_payout_value += total_payout_value;
       }
-      c.curator_payout_value += curator_steem_value;
+      c.curator_payout_value += curator_surf_value;
       c.beneficiary_payout_value += beneficiary_value;
   } );
   /// TODO: potentially modify author's total payout numbers as well
@@ -1374,10 +1374,10 @@ share_type database::cashout_comment_helper( util::comment_reward_context& ctx, 
            }
 
            author_tokens -= total_beneficiary;
-           auto vesting_steem = author_tokens;
+           auto vesting_surf = author_tokens;
            const auto& author = get_account( comment.author );
-           auto vest_created = create_vesting( author, vesting_steem, true );
-           adjust_total_payout( comment, asset( vesting_steem, SURF_SYMBOL ), asset( curation_tokens, SURF_SYMBOL ), asset( total_beneficiary, SURF_SYMBOL ) );
+           auto vest_created = create_vesting( author, vesting_surf, true );
+           adjust_total_payout( comment, asset( vesting_surf, SURF_SYMBOL ), asset( curation_tokens, SURF_SYMBOL ), asset( total_beneficiary, SURF_SYMBOL ) );
            push_virtual_operation( author_reward_operation( comment.author, to_string( comment.permlink ), asset( 0, SURF_SYMBOL ), vest_created ) );
            push_virtual_operation( comment_reward_operation( comment.author, to_string( comment.permlink ), asset( claimed_reward, SURF_SYMBOL ) ) );
 
@@ -1445,10 +1445,10 @@ void database::process_comment_cashout()
 {
 //   const auto& gpo = get_dynamic_global_properties();
    util::comment_reward_context ctx;
-//   ctx.current_steem_price = get_feed_history().current_median_history;
+//   ctx.current_surf_price = get_feed_history().current_median_history;
 
    vector< reward_fund_context > funds;
-   vector< share_type > steem_awarded;
+   vector< share_type > surf_awarded;
    const auto& reward_idx = get_index< reward_fund_index, by_id >();
 
    // Decay recent rshares of each fund
@@ -1520,8 +1520,8 @@ void database::process_comment_cashout()
    {
       auto fund_id = get_reward_fund( *current ).id._id;
       ctx.total_reward_shares2 = funds[ fund_id ].recent_claims;
-      ctx.total_reward_fund_steem = funds[ fund_id ].reward_balance;
-      funds[ fund_id ].steem_awarded += cashout_comment_helper( ctx, *current );
+      ctx.total_reward_fund_surf = funds[ fund_id ].reward_balance;
+      funds[ fund_id ].surf_awarded += cashout_comment_helper( ctx, *current );
 
       current = cidx.begin();
    }
@@ -1534,7 +1534,7 @@ void database::process_comment_cashout()
          modify( get< reward_fund_object, by_id >( reward_fund_id_type( i ) ), [&]( reward_fund_object& rfo )
          {
             rfo.recent_claims = funds[ i ].recent_claims;
-            rfo.reward_balance -= funds[ i ].steem_awarded;
+            rfo.reward_balance -= funds[ i ].surf_awarded;
          });
       }
    }
@@ -1566,14 +1566,14 @@ void database::process_funds()
   // below subtraction cannot underflow int64_t because inflation_rate_adjustment is <2^32
   int64_t current_inflation_rate = std::max( start_inflation_rate - inflation_rate_adjustment, inflation_rate_floor );
 
-  auto new_steem = ( props.current_supply.amount * current_inflation_rate ) / ( int64_t( SURF_100_PERCENT ) * int64_t( SURF_BLOCKS_PER_YEAR ) );
-  auto content_reward = ( new_steem * SURF_CONTENT_REWARD_PERCENT ) / SURF_100_PERCENT;
+  auto new_surf = ( props.current_supply.amount * current_inflation_rate ) / ( int64_t( SURF_100_PERCENT ) * int64_t( SURF_BLOCKS_PER_YEAR ) );
+  auto content_reward = ( new_surf * SURF_CONTENT_REWARD_PERCENT ) / SURF_100_PERCENT;
   content_reward = pay_reward_funds( content_reward ); /// 75% to content creator
-  auto vesting_reward = ( new_steem * SURF_VESTING_FUND_PERCENT ) / SURF_100_PERCENT; /// 15% to vesting fund
+  auto vesting_reward = ( new_surf * SURF_VESTING_FUND_PERCENT ) / SURF_100_PERCENT; /// 15% to vesting fund
   if (block_num < SURF_BLOCKS_PER_DAY) { // no vesting reward in early blocks
      vesting_reward = 0;
   }
-  auto witness_reward = new_steem - content_reward - vesting_reward; /// Remaining 10% to witness pay
+  auto witness_reward = new_surf - content_reward - vesting_reward; /// Remaining 10% to witness pay
 
   const auto& cwit = get_witness( props.current_witness );
   witness_reward *= SURF_MAX_WITNESSES;
@@ -1589,12 +1589,12 @@ void database::process_funds()
 
   witness_reward /= wso.witness_pay_normalization_factor;
 
-  new_steem = content_reward + vesting_reward + witness_reward;
+  new_surf = content_reward + vesting_reward + witness_reward;
 
   modify( props, [&]( dynamic_global_property_object& p )
   {
-      p.total_vesting_fund_steem += asset( vesting_reward, SURF_SYMBOL );
-      p.current_supply           += asset( new_steem, SURF_SYMBOL );
+      p.total_vesting_fund_surf += asset( vesting_reward, SURF_SYMBOL );
+      p.current_supply           += asset( new_surf, SURF_SYMBOL );
   });
 
   const auto& producer_reward = create_vesting( get_account( cwit.owner ), asset( witness_reward, SURF_SYMBOL ) );
@@ -1680,7 +1680,7 @@ void database::expire_escrow_ratification()
       ++escrow_itr;
 
       const auto& from_account = get_account( old_escrow.from );
-      adjust_balance( from_account, old_escrow.steem_balance );
+      adjust_balance( from_account, old_escrow.surf_balance );
       adjust_balance( from_account, old_escrow.pending_fee );
 
       remove( old_escrow );
@@ -1937,7 +1937,7 @@ void database::init_genesis( uint64_t init_supply )
          p.current_supply = asset( init_supply, SURF_SYMBOL );
          p.maximum_block_size = SURF_MAX_BLOCK_SIZE;
 
-         p.total_reward_fund_steem = asset( 0, SURF_SYMBOL );
+         p.total_reward_fund_surf = asset( 0, SURF_SYMBOL );
          p.total_reward_shares2 = 0;
          p.vote_power_reserve_rate = 10;
       } );
@@ -1992,7 +1992,7 @@ void database::init_genesis( uint64_t init_supply )
              rfo.content_constant = SURF_CONTENT_CONSTANT;
              rfo.percent_curation_rewards = SURF_CONTENT_CURATE_REWARD_PERCENT;
              rfo.percent_content_rewards = SURF_100_PERCENT;
-             rfo.reward_balance = asset( 0, SURF_SYMBOL ); // gpo.total_reward_fund_steem;
+             rfo.reward_balance = asset( 0, SURF_SYMBOL ); // gpo.total_reward_fund_surf;
 
 #ifndef IS_TEST_NET
              rfo.recent_claims = (fc::uint128_t(uint64_t(42000000000000ull)));
@@ -2604,7 +2604,7 @@ void database::adjust_reward_balance( const account_object& a, const asset& delt
       switch( delta.symbol )
       {
          case SURF_SYMBOL:
-            acnt.reward_steem_balance += delta;
+            acnt.reward_surf_balance += delta;
             break;
          default:
             FC_ASSERT( false, "invalid symbol" );
@@ -2628,7 +2628,7 @@ void database::adjust_supply( const asset& delta, bool adjust_vesting )
          {
             asset new_vesting( (adjust_vesting && delta.amount > 0) ? delta.amount * 9 : 0, SURF_SYMBOL );
             props.current_supply += delta + new_vesting;
-            props.total_vesting_fund_steem += new_vesting;
+            props.total_vesting_fund_surf += new_vesting;
             assert( props.current_supply.amount.value >= 0 );
             break;
          }
@@ -2737,7 +2737,7 @@ void database::validate_invariants()const
      const auto& account_idx = get_index<account_index>().indices().get<by_name>();
      asset total_supply = asset( 0, SURF_SYMBOL );
      asset total_vesting = asset( 0, VESTS_SYMBOL );
-     asset pending_vesting_steem = asset( 0, SURF_SYMBOL );
+     asset pending_vesting_surf = asset( 0, SURF_SYMBOL );
      share_type total_vsf_votes = share_type( 0 );
 
      auto gpo = get_dynamic_global_properties();
@@ -2750,10 +2750,10 @@ void database::validate_invariants()const
      for( auto itr = account_idx.begin(); itr != account_idx.end(); ++itr )
      {
         total_supply += itr->balance;
-        total_supply += itr->reward_steem_balance;
+        total_supply += itr->reward_surf_balance;
         total_vesting += itr->vesting_shares;
         total_vesting += itr->reward_vesting_balance;
-        pending_vesting_steem += itr->reward_vesting_steem;
+        pending_vesting_surf += itr->reward_vesting_surf;
         total_vsf_votes += ( itr->proxy == SURF_PROXY_TO_SELF_ACCOUNT ?
                              itr->witness_vote_weight() :
                              ( SURF_MAX_PROXY_RECURSION_DEPTH > 0 ?
@@ -2765,7 +2765,7 @@ void database::validate_invariants()const
 
      for( auto itr = escrow_idx.begin(); itr != escrow_idx.end(); ++itr )
      {
-        total_supply += itr->steem_balance;
+        total_supply += itr->surf_balance;
 
         if( itr->pending_fee.symbol == SURF_SYMBOL )
            total_supply += itr->pending_fee;
@@ -2793,12 +2793,12 @@ void database::validate_invariants()const
         total_supply += itr->reward_balance;
      }
 
-     total_supply += gpo.total_vesting_fund_steem + gpo.total_reward_fund_steem + gpo.pending_rewarded_vesting_steem;
+     total_supply += gpo.total_vesting_fund_surf + gpo.total_reward_fund_surf + gpo.pending_rewarded_vesting_surf;
 
      FC_ASSERT( gpo.current_supply == total_supply, "", ("gpo.current_supply",gpo.current_supply)("total_supply",total_supply) );
      FC_ASSERT( gpo.total_vesting_shares + gpo.pending_rewarded_vesting_shares == total_vesting, "", ("gpo.total_vesting_shares",gpo.total_vesting_shares)("total_vesting",total_vesting) );
      FC_ASSERT( gpo.total_vesting_shares.amount == total_vsf_votes, "", ("total_vesting_shares",gpo.total_vesting_shares)("total_vsf_votes",total_vsf_votes) );
-     FC_ASSERT( gpo.pending_rewarded_vesting_steem == pending_vesting_steem, "", ("pending_rewarded_vesting_steem",gpo.pending_rewarded_vesting_steem)("pending_vesting_steem", pending_vesting_steem));
+     FC_ASSERT( gpo.pending_rewarded_vesting_surf == pending_vesting_surf, "", ("pending_rewarded_vesting_surf",gpo.pending_rewarded_vesting_surf)("pending_vesting_surf", pending_vesting_surf));
   }
   FC_CAPTURE_LOG_AND_RETHROW( (head_block_num()) );
 }

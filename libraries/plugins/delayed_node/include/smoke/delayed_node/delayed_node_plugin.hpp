@@ -24,7 +24,7 @@
 #pragma once
 
 #include <surf/app/plugin.hpp>
-#include <surf/chain/steem_objects.hpp>
+#include <surf/chain/surf_objects.hpp>
 
 namespace surf { namespace delayed_node {
 namespace detail { struct delayed_node_plugin_impl; }

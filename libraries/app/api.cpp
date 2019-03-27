@@ -31,7 +31,7 @@
 #include <surf/protocol/get_config.hpp>
 
 #include <surf/chain/database.hpp>
-#include <surf/chain/steem_objects.hpp>
+#include <surf/chain/surf_objects.hpp>
 #include <surf/chain/transaction_object.hpp>
 #include <fc/time.hpp>
 
@@ -115,9 +115,9 @@ namespace surf { namespace app {
        return it->second;
     }
 
-    steem_version_info login_api::get_version()
+    surf_version_info login_api::get_version()
     {
-       return steem_version_info(
+       return surf_version_info(
          fc::string( SURF_BLOCKCHAIN_VERSION ),
          fc::string( graphene::utilities::git_revision_sha ),
          fc::string( fc::git_revision_sha ) );

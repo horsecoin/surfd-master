@@ -104,7 +104,7 @@ statistics& statistics::operator +=( const bucket_object& b )
    this->operations                             += b.operations;
    this->transactions                           += b.transactions;
    this->transfers                              += b.transfers;
-   this->steem_transferred                      += b.steem_transferred;
+   this->surf_transferred                      += b.surf_transferred;
    this->accounts_created                       += b.paid_accounts_created + b.mined_accounts_created;
    this->paid_accounts_created                  += b.paid_accounts_created;
    this->mined_accounts_created                 += b.mined_accounts_created;
@@ -127,11 +127,11 @@ statistics& statistics::operator +=( const bucket_object& b )
    this->new_reply_votes                        += b.new_reply_votes;
    this->changed_reply_votes                    += b.changed_reply_votes;
    this->payouts                                += b.payouts;
-   this->steem_paid_to_authors                  += b.steem_paid_to_authors;
+   this->surf_paid_to_authors                  += b.surf_paid_to_authors;
    this->vests_paid_to_authors                  += b.vests_paid_to_authors;
    this->vests_paid_to_curators                 += b.vests_paid_to_curators;
    this->transfers_to_vesting                   += b.transfers_to_vesting;
-   this->steem_vested                           += b.steem_vested;
+   this->surf_vested                           += b.surf_vested;
    this->new_vesting_withdrawal_requests        += b.new_vesting_withdrawal_requests;
    this->vesting_withdraw_rate_delta            += b.vesting_withdraw_rate_delta;
    this->modified_vesting_withdrawal_requests   += b.modified_vesting_withdrawal_requests;
@@ -139,7 +139,7 @@ statistics& statistics::operator +=( const bucket_object& b )
    this->finished_vesting_withdrawals           += b.finished_vesting_withdrawals;
    this->vests_withdrawn                        += b.vests_withdrawn;
    this->vests_transferred                      += b.vests_transferred;
-   this->steem_converted                        += b.steem_converted;
+   this->surf_converted                        += b.surf_converted;
 
    return ( *this );
 }

@@ -26,8 +26,8 @@
 #include <surf/app/application.hpp>
 #include <surf/app/plugin.hpp>
 
-#include <surf/chain/steem_objects.hpp>
-#include <surf/chain/steem_object_types.hpp>
+#include <surf/chain/surf_objects.hpp>
+#include <surf/chain/surf_object_types.hpp>
 #include <surf/chain/database_exceptions.hpp>
 
 #include <fc/time.hpp>
@@ -366,7 +366,7 @@ namespace detail {
          }
          else
          {
-            ilog( "Starting Steem node in read mode." );
+            ilog( "Starting Surf node in read mode." );
             _chain_db->open( _data_dir / "blockchain", _shared_dir, SURF_INIT_SUPPLY, _shared_file_size, chainbase::database::read_only );
 
             if( _options->count( "read-forward-rpc" ) )

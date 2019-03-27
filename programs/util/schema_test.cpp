@@ -8,7 +8,7 @@
 #include <vector>
 
 #include <surf/chain/account_object.hpp>
-#include <surf/chain/steem_objects.hpp>
+#include <surf/chain/surf_objects.hpp>
 
 using namespace graphene::db;
 

@@ -2,7 +2,7 @@
 
 #include <surf/protocol/operations.hpp>
 
-#include <surf/chain/steem_object_types.hpp>
+#include <surf/chain/surf_object_types.hpp>
 
 namespace surf { namespace chain {
 

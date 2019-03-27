@@ -27,7 +27,7 @@
 #include <surf/chain/database.hpp>
 #include <surf/protocol/protocol.hpp>
 
-#include <surf/protocol/steem_operations.hpp>
+#include <surf/protocol/surf_operations.hpp>
 
 #include <fc/crypto/digest.hpp>
 #include <fc/crypto/hex.hpp>

@@ -1,7 +1,7 @@
 #pragma once
 #include <surf/protocol/transaction.hpp>
 
-#include <surf/chain/steem_object_types.hpp>
+#include <surf/chain/surf_object_types.hpp>
 
 #include <boost/multi_index/hashed_index.hpp>
 

@@ -26,7 +26,7 @@
 #include <fc/container/flat.hpp>
 #include <surf/protocol/operations.hpp>
 #include <surf/protocol/transaction.hpp>
-#include <surf/chain/steem_object_types.hpp>
+#include <surf/chain/surf_object_types.hpp>
 
 #include <fc/string.hpp>
 

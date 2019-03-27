@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Steemit, Inc., and contributors.
+ * Copyright (c) 2016 Surfit, Inc., and contributors.
  */
 #pragma once
 
@@ -101,7 +101,7 @@
 
 #define SURF_MAX_RESERVE_RATIO               (20000)
 
-#define SURF_CREATE_ACCOUNT_WITH_STEEM_MODIFIER 30
+#define SURF_CREATE_ACCOUNT_WITH_SURF_MODIFIER 30
 #define SURF_CREATE_ACCOUNT_DELEGATION_RATIO    5
 #define SURF_CREATE_ACCOUNT_DELEGATION_TIME     fc::days(30)
 
@@ -115,7 +115,7 @@
 #define SURF_RECENT_RSHARES_DECAY_RATE       (fc::days(15))
 #define SURF_CONTENT_CONSTANT                (uint128_t(uint64_t(2000000000000ll)))
 
-#define SURF_MIN_PAYOUT_STEEM                20
+#define SURF_MIN_PAYOUT_SURF                20
 #define SURF_MIN_ACCOUNT_NAME_LENGTH          3
 #define SURF_MAX_ACCOUNT_NAME_LENGTH         16
 

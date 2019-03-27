@@ -1,7 +1,7 @@
 #pragma once
 #include <fc/uint128.hpp>
 
-#include <surf/chain/steem_object_types.hpp>
+#include <surf/chain/surf_object_types.hpp>
 
 #include <surf/protocol/asset.hpp>
 
@@ -38,28 +38,28 @@ namespace surf { namespace chain {
          account_name_type current_witness;
 
          asset       current_supply             = asset( 0, SURF_SYMBOL );
-         asset       total_vesting_fund_steem   = asset( 0, SURF_SYMBOL );
+         asset       total_vesting_fund_surf   = asset( 0, SURF_SYMBOL );
          asset       total_vesting_shares       = asset( 0, VESTS_SYMBOL );
-         asset       total_reward_fund_steem    = asset( 0, SURF_SYMBOL );
+         asset       total_reward_fund_surf    = asset( 0, SURF_SYMBOL );
          fc::uint128 total_reward_shares2; ///< the running total of REWARD^2
          asset       pending_rewarded_vesting_shares = asset( 0, VESTS_SYMBOL );
-         asset       pending_rewarded_vesting_steem = asset( 0, SURF_SYMBOL );
+         asset       pending_rewarded_vesting_surf = asset( 0, SURF_SYMBOL );
 
          price       get_vesting_share_price() const
          {
-            if ( total_vesting_fund_steem.amount == 0 || total_vesting_shares.amount == 0 )
+            if ( total_vesting_fund_surf.amount == 0 || total_vesting_shares.amount == 0 )
                return price ( asset( 1000, SURF_SYMBOL ), asset( 1000000, VESTS_SYMBOL ) );
 
-            return price( total_vesting_shares, total_vesting_fund_steem );
+            return price( total_vesting_shares, total_vesting_fund_surf );
          }
 
          price get_reward_vesting_share_price() const
          {
-            if ( pending_rewarded_vesting_shares.amount == 0 || pending_rewarded_vesting_steem.amount == 0 )
+            if ( pending_rewarded_vesting_shares.amount == 0 || pending_rewarded_vesting_surf.amount == 0 )
                return get_vesting_share_price();
 
             return price( total_vesting_shares + pending_rewarded_vesting_shares,
-               total_vesting_fund_steem + pending_rewarded_vesting_steem );
+               total_vesting_fund_surf + pending_rewarded_vesting_surf );
          }
 
          /**
@@ -113,12 +113,12 @@ FC_REFLECT( surf::chain::dynamic_global_property_object,
              (time)
              (current_witness)
              (current_supply)
-             (total_vesting_fund_steem)
+             (total_vesting_fund_surf)
              (total_vesting_shares)
-             (total_reward_fund_steem)
+             (total_reward_fund_surf)
              (total_reward_shares2)
              (pending_rewarded_vesting_shares)
-             (pending_rewarded_vesting_steem)
+             (pending_rewarded_vesting_surf)
              (maximum_block_size)
              (current_aslot)
              (recent_slots_filled)

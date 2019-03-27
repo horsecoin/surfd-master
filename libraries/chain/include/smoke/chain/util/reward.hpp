@@ -1,7 +1,7 @@
 #pragma once
 
 #include <surf/chain/util/asset.hpp>
-#include <surf/chain/steem_objects.hpp>
+#include <surf/chain/surf_objects.hpp>
 
 #include <surf/protocol/asset.hpp>
 #include <surf/protocol/config.hpp>
@@ -25,8 +25,8 @@ struct comment_reward_context
    uint16_t   reward_weight = 0;
    asset      max_sbd; // sbd is disabled, value in SURF_SYMBOL
    uint128_t  total_reward_shares2;
-   asset      total_reward_fund_steem;
-   price      current_steem_price;
+   asset      total_reward_fund_surf;
+   price      current_surf_price;
    curve_id   reward_curve = quadratic;
    uint128_t  content_constant = SURF_CONTENT_CONSTANT;
 };
@@ -47,8 +47,8 @@ FC_REFLECT( surf::chain::util::comment_reward_context,
    (reward_weight)
    (max_sbd)
    (total_reward_shares2)
-   (total_reward_fund_steem)
-   (current_steem_price)
+   (total_reward_fund_surf)
+   (current_surf_price)
    (reward_curve)
    (content_constant)
    )

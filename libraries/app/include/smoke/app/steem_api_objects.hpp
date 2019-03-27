@@ -4,7 +4,7 @@
 #include <surf/chain/comment_object.hpp>
 #include <surf/chain/global_property_object.hpp>
 #include <surf/chain/history_object.hpp>
-#include <surf/chain/steem_objects.hpp>
+#include <surf/chain/surf_objects.hpp>
 #include <surf/chain/transaction_object.hpp>
 #include <surf/chain/witness_objects.hpp>
 
@@ -163,9 +163,9 @@ struct account_api_obj
       voting_power( a.voting_power ),
       last_vote_time( a.last_vote_time ),
       balance( a.balance ),
-      reward_steem_balance( a.reward_steem_balance ),
+      reward_surf_balance( a.reward_surf_balance ),
       reward_vesting_balance( a.reward_vesting_balance ),
-      reward_vesting_steem( a.reward_vesting_steem ),
+      reward_vesting_surf( a.reward_vesting_surf ),
       curation_rewards( a.curation_rewards ),
       posting_rewards( a.posting_rewards ),
       vesting_shares( a.vesting_shares ),
@@ -248,9 +248,9 @@ struct account_api_obj
 
    asset             balance;
 
-   asset             reward_steem_balance;
+   asset             reward_surf_balance;
    asset             reward_vesting_balance;
-   asset             reward_vesting_steem;
+   asset             reward_vesting_surf;
 
    share_type        curation_rewards;
    share_type        posting_rewards;
@@ -430,7 +430,7 @@ FC_REFLECT( surf::app::account_api_obj,
              (owner_challenged)(active_challenged)(last_owner_proved)(last_active_proved)(recovery_account)(last_account_recovery)(reset_account)
              (comment_count)(lifetime_vote_count)(post_count)(can_vote)(voting_power)(last_vote_time)
              (balance)
-             (reward_steem_balance)(reward_vesting_balance)(reward_vesting_steem)
+             (reward_surf_balance)(reward_vesting_balance)(reward_vesting_surf)
              (vesting_shares)(delegated_vesting_shares)(received_vesting_shares)(vesting_withdraw_rate)(next_vesting_withdrawal)(withdrawn)(to_withdraw)(withdraw_routes)
              (curation_rewards)
              (posting_rewards)

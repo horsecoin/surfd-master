@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 #include <surf/protocol/protocol.hpp>
-#include <surf/chain/steem_objects.hpp>
+#include <surf/chain/surf_objects.hpp>
 #include <fc/smart_ref_impl.hpp>
 #include <iostream>
 

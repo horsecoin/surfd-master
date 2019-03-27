@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <surf/chain/steem_object_types.hpp>
+#include <surf/chain/surf_object_types.hpp>
 
 #include <fc/api.hpp>
 

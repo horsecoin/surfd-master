@@ -1,4 +1,4 @@
-#include <surf/protocol/steem_operations.hpp>
+#include <surf/protocol/surf_operations.hpp>
 #include <fc/io/json.hpp>
 
 #include <locale>
@@ -231,11 +231,11 @@ namespace surf { namespace protocol {
       validate_account_name( to );
       validate_account_name( agent );
       FC_ASSERT( fee.amount >= 0, "fee cannot be negative" );
-      FC_ASSERT( steem_amount.amount >= 0, "amount cannot be negative" );
-      FC_ASSERT( steem_amount.amount > 0, "escrow must transfer a non-zero amount" );
+      FC_ASSERT( surf_amount.amount >= 0, "amount cannot be negative" );
+      FC_ASSERT( surf_amount.amount > 0, "escrow must transfer a non-zero amount" );
       FC_ASSERT( from != agent && to != agent, "agent must be a third party" );
       FC_ASSERT( (fee.symbol == SURF_SYMBOL), "fee must be SURF" );
-      FC_ASSERT( steem_amount.symbol == SURF_SYMBOL, "amount must contain SURF" );
+      FC_ASSERT( surf_amount.symbol == SURF_SYMBOL, "amount must contain SURF" );
       FC_ASSERT( ratification_deadline < escrow_expiration, "ratification deadline must be before escrow expiration" );
       if ( json_meta.size() > 0 )
       {
@@ -271,8 +271,8 @@ namespace surf { namespace protocol {
       validate_account_name( receiver );
       FC_ASSERT( who == from || who == to || who == agent, "who must be from or to or agent" );
       FC_ASSERT( receiver == from || receiver == to, "receiver must be from or to" );
-      FC_ASSERT( steem_amount.amount >= 0, "amount cannot be negative" );
-      FC_ASSERT( steem_amount.symbol == SURF_SYMBOL, "amount must contain SURF" );
+      FC_ASSERT( surf_amount.amount >= 0, "amount cannot be negative" );
+      FC_ASSERT( surf_amount.symbol == SURF_SYMBOL, "amount must contain SURF" );
    }
 
    void request_account_recovery_operation::validate()const
@@ -307,11 +307,11 @@ namespace surf { namespace protocol {
    void claim_reward_balance_operation::validate()const
    {
       validate_account_name( account );
-      FC_ASSERT( is_asset_type( reward_steem, SURF_SYMBOL ), "Reward Steem must be SURF" );
-      FC_ASSERT( is_asset_type( reward_vests, VESTS_SYMBOL ), "Reward Steem must be VESTS" );
-      FC_ASSERT( reward_steem.amount >= 0, "Cannot claim a negative amount" );
+      FC_ASSERT( is_asset_type( reward_surf, SURF_SYMBOL ), "Reward Surf must be SURF" );
+      FC_ASSERT( is_asset_type( reward_vests, VESTS_SYMBOL ), "Reward Surf must be VESTS" );
+      FC_ASSERT( reward_surf.amount >= 0, "Cannot claim a negative amount" );
       FC_ASSERT( reward_vests.amount >= 0, "Cannot claim a negative amount" );
-      FC_ASSERT( reward_steem.amount > 0 || reward_vests.amount > 0, "Must claim something." );
+      FC_ASSERT( reward_surf.amount > 0 || reward_vests.amount > 0, "Must claim something." );
    }
 
    void delegate_vesting_shares_operation::validate()const

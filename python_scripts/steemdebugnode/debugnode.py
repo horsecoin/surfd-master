@@ -23,7 +23,7 @@ class DebugNode( object ):
       While in the context of 'with' the debug node will continue to run.
       Upon exit of 'with' the debug will exit and clean up temporary files.
       This class also contains methods to allow basic manipulation of the blockchain.
-      For all other requests, the python-steem library should be used.
+      For all other requests, the python-surf library should be used.
 
       args:
          surfd -- The string path to the location of the surfd binary
@@ -52,7 +52,7 @@ class DebugNode( object ):
 
       self._data_dir = Path( data_dir )
       if( not self._data_dir.exists() ):
-         raise ValueError( 'data_dir either does not exist or is not a properly constructed steem data directory' )
+         raise ValueError( 'data_dir either does not exist or is not a properly constructed surf data directory' )
       if( not self._data_dir.is_dir() ):
          raise ValueError( 'data_dir is not a directory' )
 
@@ -150,7 +150,7 @@ class DebugNode( object ):
 
       The debug node plugin requires a WIF key to sign blocks with. This class uses the key
       5JHNbFNDg834SFj8CMArV6YW7td4zrPzXveqTfaShmYVuYNeK69 which was generated from
-      `get_dev_key steem debug`. Do not use this key on the live chain for any reason.
+      `get_dev_key surf debug`. Do not use this key on the live chain for any reason.
 
       args:
          count -- The number of new blocks to generate.
@@ -170,7 +170,7 @@ class DebugNode( object ):
 
       The debug node plugin requires a WIF key to sign blocks with. This class uses the key
       5JHNbFNDg834SFj8CMArV6YW7td4zrPzXveqTfaShmYVuYNeK69 which was generated from
-      `get_dev_key steem debug`. Do not use this key on the live chain for any reason.
+      `get_dev_key surf debug`. Do not use this key on the live chain for any reason.
 
       args:
          time -- The desired new head block time. This is a POSIX Timestmap.

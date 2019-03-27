@@ -2,9 +2,9 @@
 #include <fc/fixed_string.hpp>
 
 #include <surf/protocol/authority.hpp>
-#include <surf/protocol/steem_operations.hpp>
+#include <surf/protocol/surf_operations.hpp>
 
-#include <surf/chain/steem_object_types.hpp>
+#include <surf/chain/surf_object_types.hpp>
 #include <surf/chain/witness_objects.hpp>
 #include <surf/chain/shared_authority.hpp>
 
@@ -56,9 +56,9 @@ namespace surf { namespace chain {
 
          asset             balance = asset( 0, SURF_SYMBOL );  ///< total liquid shares held by this account
 
-         asset             reward_steem_balance = asset( 0, SURF_SYMBOL );
+         asset             reward_surf_balance = asset( 0, SURF_SYMBOL );
          asset             reward_vesting_balance = asset( 0, VESTS_SYMBOL );
-         asset             reward_vesting_steem = asset( 0, SURF_SYMBOL );
+         asset             reward_vesting_surf = asset( 0, SURF_SYMBOL );
 
          share_type        curation_rewards = 0;
          share_type        posting_rewards = 0;
@@ -212,7 +212,7 @@ namespace surf { namespace chain {
    struct by_proxy;
    struct by_last_post;
    struct by_next_vesting_withdrawal;
-   struct by_steem_balance;
+   struct by_surf_balance;
    struct by_smp_balance;
    struct by_post_count;
    struct by_vote_count;
@@ -246,7 +246,7 @@ namespace surf { namespace chain {
             >,
             composite_key_compare< std::greater< time_point_sec >, std::less< account_id_type > >
          >,
-         ordered_unique< tag< by_steem_balance >,
+         ordered_unique< tag< by_surf_balance >,
             composite_key< account_object,
                member< account_object, asset, &account_object::balance >,
                member< account_object, account_id_type, &account_object::id >
@@ -425,7 +425,7 @@ FC_REFLECT( surf::chain::account_object,
              (owner_challenged)(active_challenged)(last_owner_proved)(last_active_proved)(recovery_account)(last_account_recovery)(reset_account)
              (comment_count)(lifetime_vote_count)(post_count)(can_vote)(voting_power)(last_vote_time)
              (balance)
-             (reward_steem_balance)(reward_vesting_balance)(reward_vesting_steem)
+             (reward_surf_balance)(reward_vesting_balance)(reward_vesting_surf)
              (vesting_shares)(delegated_vesting_shares)(received_vesting_shares)
              (vesting_withdraw_rate)(next_vesting_withdrawal)(withdrawn)(to_withdraw)(withdraw_routes)
              (curation_rewards)

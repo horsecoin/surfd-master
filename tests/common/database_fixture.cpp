@@ -3,7 +3,7 @@
 
 #include <graphene/utilities/tempdir.hpp>
 
-#include <surf/chain/steem_objects.hpp>
+#include <surf/chain/surf_objects.hpp>
 #include <surf/chain/history_object.hpp>
 #include <surf/account_history/account_history_plugin.hpp>
 #include <surf/witness/witness_plugin.hpp>
@@ -273,7 +273,7 @@ const account_object& database_fixture::account_create(
          name,
          SURF_INIT_MINER_NAME,
          init_account_priv_key,
-         std::max( db.get_witness_schedule_object().median_props.account_creation_fee.amount * SURF_CREATE_ACCOUNT_WITH_STEEM_MODIFIER, share_type( 4200 ) ),
+         std::max( db.get_witness_schedule_object().median_props.account_creation_fee.amount * SURF_CREATE_ACCOUNT_WITH_SURF_MODIFIER, share_type( 4200 ) ),
          key,
          post_key,
          "" );

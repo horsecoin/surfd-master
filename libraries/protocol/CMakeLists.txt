@@ -8,7 +8,7 @@ add_library( surf_protocol
              operations.cpp
              sign_state.cpp
              operation_util_impl.cpp
-             steem_operations.cpp
+             surf_operations.cpp
              transaction.cpp
              block.cpp
              asset.cpp

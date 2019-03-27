@@ -310,8 +310,8 @@ public:
       fc::mutable_variant_object result;
       result["blockchain_version"]       = SURF_BLOCKCHAIN_VERSION;
       result["client_version"]           = client_version;
-      result["steem_revision"]           = graphene::utilities::git_revision_sha;
-      result["steem_revision_age"]       = fc::get_approximate_relative_time_string( fc::time_point_sec( graphene::utilities::git_revision_unix_timestamp ) );
+      result["surf_revision"]           = graphene::utilities::git_revision_sha;
+      result["surf_revision_age"]       = fc::get_approximate_relative_time_string( fc::time_point_sec( graphene::utilities::git_revision_unix_timestamp ) );
       result["fc_revision"]              = fc::git_revision_sha;
       result["fc_revision_age"]          = fc::get_approximate_relative_time_string( fc::time_point_sec( fc::git_revision_unix_timestamp ) );
       result["compile_date"]             = "compiled on " __DATE__ " at " __TIME__;
@@ -334,7 +334,7 @@ public:
       {
          auto v = _remote_api->get_version();
          result["server_blockchain_version"] = v.blockchain_version;
-         result["server_steem_revision"] = v.steem_revision;
+         result["server_surf_revision"] = v.surf_revision;
          result["server_fc_revision"] = v.fc_revision;
       }
       catch( fc::exception& )
@@ -725,10 +725,10 @@ public:
          std::stringstream out;
 
          auto accounts = result.as<vector<account_api_obj>>();
-         asset total_steem;
+         asset total_surf;
          asset total_vest(0, VESTS_SYMBOL );
          for( const auto& a : accounts ) {
-            total_steem += a.balance;
+            total_surf += a.balance;
             total_vest  += a.vesting_shares;
             out << std::left << std::setw( 17 ) << std::string(a.name)
                 << std::right << std::setw(18) << fc::variant(a.balance).as_string() <<" "
@@ -737,7 +737,7 @@ public:
          }
          out << "-------------------------------------------------------------------------\n";
             out << std::left << std::setw( 17 ) << "TOTAL"
-                << std::right << std::setw(18) << fc::variant(total_steem).as_string() <<" "
+                << std::right << std::setw(18) << fc::variant(total_surf).as_string() <<" "
                 << std::right << std::setw(26) << fc::variant(total_vest).as_string() <<" "
                 << std::right << std::setw(16) <<"\n";
          return out.str();
@@ -1215,7 +1215,7 @@ annotated_signed_transaction wallet_api::create_account_with_keys( string creato
    op.posting = authority( 1, posting, 1 );
    op.memo_key = memo;
    op.json_metadata = json_meta;
-   op.fee = my->_remote_db->get_chain_properties().account_creation_fee * asset( SURF_CREATE_ACCOUNT_WITH_STEEM_MODIFIER, SURF_SYMBOL );
+   op.fee = my->_remote_db->get_chain_properties().account_creation_fee * asset( SURF_CREATE_ACCOUNT_WITH_SURF_MODIFIER, SURF_SYMBOL );
 
    signed_transaction tx;
    tx.operations.push_back(op);
@@ -1230,7 +1230,7 @@ annotated_signed_transaction wallet_api::create_account_with_keys( string creato
  * wallet.
  */
 annotated_signed_transaction wallet_api::create_account_with_keys_delegated( string creator,
-                                      asset steem_fee,
+                                      asset surf_fee,
                                       asset delegated_vests,
                                       string new_account_name,
                                       string json_meta,
@@ -1249,7 +1249,7 @@ annotated_signed_transaction wallet_api::create_account_with_keys_delegated( str
    op.posting = authority( 1, posting, 1 );
    op.memo_key = memo;
    op.json_metadata = json_meta;
-   op.fee = steem_fee;
+   op.fee = surf_fee;
    op.delegation = delegated_vests;
 
    signed_transaction tx;
@@ -1616,7 +1616,7 @@ annotated_signed_transaction wallet_api::create_account( string creator, string 
  *  This method will genrate new owner, active, and memo keys for the new account which
  *  will be controlable by this wallet.
  */
-annotated_signed_transaction wallet_api::create_account_delegated( string creator, asset steem_fee, asset delegated_vests, string new_account_name, string json_meta, bool broadcast )
+annotated_signed_transaction wallet_api::create_account_delegated( string creator, asset surf_fee, asset delegated_vests, string new_account_name, string json_meta, bool broadcast )
 { try {
    FC_ASSERT( !is_locked() );
    auto owner = suggest_brain_key();
@@ -1627,7 +1627,7 @@ annotated_signed_transaction wallet_api::create_account_delegated( string creato
    import_key( active.wif_priv_key );
    import_key( posting.wif_priv_key );
    import_key( memo.wif_priv_key );
-   return create_account_with_keys_delegated( creator, steem_fee, delegated_vests, new_account_name, json_meta,  owner.pub_key, active.pub_key, posting.pub_key, memo.pub_key, broadcast );
+   return create_account_with_keys_delegated( creator, surf_fee, delegated_vests, new_account_name, json_meta,  owner.pub_key, active.pub_key, posting.pub_key, memo.pub_key, broadcast );
 } FC_CAPTURE_AND_RETHROW( (creator)(new_account_name)(json_meta) ) }
 
 
@@ -1787,7 +1787,7 @@ annotated_signed_transaction wallet_api::escrow_transfer(
       string to,
       string agent,
       uint32_t escrow_id,
-      asset steem_amount,
+      asset surf_amount,
       asset fee,
       time_point_sec ratification_deadline,
       time_point_sec escrow_expiration,
@@ -1801,7 +1801,7 @@ annotated_signed_transaction wallet_api::escrow_transfer(
    op.to = to;
    op.agent = agent;
    op.escrow_id = escrow_id;
-   op.steem_amount = steem_amount;
+   op.surf_amount = surf_amount;
    op.fee = fee;
    op.ratification_deadline = ratification_deadline;
    op.escrow_expiration = escrow_expiration;
@@ -1870,7 +1870,7 @@ annotated_signed_transaction wallet_api::escrow_release(
    string who,
    string receiver,
    uint32_t escrow_id,
-   asset steem_amount,
+   asset surf_amount,
    bool broadcast
 )
 {
@@ -1882,7 +1882,7 @@ annotated_signed_transaction wallet_api::escrow_release(
    op.who = who;
    op.receiver = receiver;
    op.escrow_id = escrow_id;
-   op.steem_amount = steem_amount;
+   op.surf_amount = surf_amount;
 
    signed_transaction tx;
    tx.operations.push_back( op );
@@ -1981,12 +1981,12 @@ annotated_signed_transaction wallet_api::decline_voting_rights( string account, 
    return my->sign_transaction( tx, broadcast );
 }
 
-annotated_signed_transaction wallet_api::claim_reward_balance( string account, asset reward_steem, asset reward_vests, bool broadcast )
+annotated_signed_transaction wallet_api::claim_reward_balance( string account, asset reward_surf, asset reward_vests, bool broadcast )
 {
    FC_ASSERT( !is_locked() );
    claim_reward_balance_operation op;
    op.account = account;
-   op.reward_steem = reward_steem;
+   op.reward_surf = reward_surf;
    op.reward_vests = reward_vests;
 
    signed_transaction tx;

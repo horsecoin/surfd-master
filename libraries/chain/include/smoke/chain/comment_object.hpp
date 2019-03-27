@@ -1,9 +1,9 @@
 #pragma once
 
 #include <surf/protocol/authority.hpp>
-#include <surf/protocol/steem_operations.hpp>
+#include <surf/protocol/surf_operations.hpp>
 
-#include <surf/chain/steem_object_types.hpp>
+#include <surf/chain/surf_object_types.hpp>
 #include <surf/chain/witness_objects.hpp>
 
 #include <boost/multi_index/composite_key.hpp>

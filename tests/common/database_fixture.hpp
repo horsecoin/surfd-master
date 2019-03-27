@@ -208,7 +208,7 @@ struct database_fixture {
 
    void fund( const string& account_name, const share_type& amount = 500000 );
    void fund( const string& account_name, const asset& amount );
-   void transfer( const string& from, const string& to, const share_type& steem );
+   void transfer( const string& from, const string& to, const share_type& surf );
    void vest( const string& from, const share_type& amount );
    void vest( const string& account, const asset& amount );
    void proxy( const string& account, const string& proxy );

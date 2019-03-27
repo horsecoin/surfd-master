@@ -228,7 +228,7 @@ namespace surf { namespace protocol {
       account_name_type agent;
       uint32_t          escrow_id = 30;
 
-      asset             steem_amount = asset( 0, SURF_SYMBOL );
+      asset             surf_amount = asset( 0, SURF_SYMBOL );
       asset             fee;
 
       time_point_sec    ratification_deadline;
@@ -299,7 +299,7 @@ namespace surf { namespace protocol {
       account_name_type receiver; ///< the account that should receive funds (might be from, might be to)
 
       uint32_t          escrow_id = 30;
-      asset             steem_amount = asset( 0, SURF_SYMBOL ); ///< the amount of steem to release
+      asset             surf_amount = asset( 0, SURF_SYMBOL ); ///< the amount of surf to release
 
       void validate()const;
       void get_required_active_authorities( flat_set<account_name_type>& a )const{ a.insert(who); }
@@ -349,7 +349,7 @@ namespace surf { namespace protocol {
     * request for the funds to be transferred directly to another account's
     * balance rather than the withdrawing account. In addition, those funds
     * can be immediately vested again, circumventing the conversion from
-    * vests to steem and back, guaranteeing they maintain their value.
+    * vests to surf and back, guaranteeing they maintain their value.
     */
    struct set_withdraw_vesting_route_operation : public base_operation
    {
@@ -635,7 +635,7 @@ namespace surf { namespace protocol {
    struct claim_reward_balance_operation : public base_operation
    {
       account_name_type account;
-      asset             reward_steem;
+      asset             reward_surf;
       asset             reward_vests;
 
       void get_required_posting_authorities( flat_set< account_name_type >& a )const{ a.insert( account ); }
@@ -714,15 +714,15 @@ FC_REFLECT( surf::protocol::comment_payout_beneficiaries, (beneficiaries) )
 FC_REFLECT_TYPENAME( surf::protocol::comment_options_extension )
 FC_REFLECT( surf::protocol::comment_options_operation, (author)(permlink)(max_accepted_payout)(allow_votes)(allow_curation_rewards)(extensions) )
 
-FC_REFLECT( surf::protocol::escrow_transfer_operation, (from)(to)(steem_amount)(escrow_id)(agent)(fee)(json_meta)(ratification_deadline)(escrow_expiration) );
+FC_REFLECT( surf::protocol::escrow_transfer_operation, (from)(to)(surf_amount)(escrow_id)(agent)(fee)(json_meta)(ratification_deadline)(escrow_expiration) );
 FC_REFLECT( surf::protocol::escrow_approve_operation, (from)(to)(agent)(who)(escrow_id)(approve) );
 FC_REFLECT( surf::protocol::escrow_dispute_operation, (from)(to)(agent)(who)(escrow_id) );
-FC_REFLECT( surf::protocol::escrow_release_operation, (from)(to)(agent)(who)(receiver)(escrow_id)(steem_amount) );
+FC_REFLECT( surf::protocol::escrow_release_operation, (from)(to)(agent)(who)(receiver)(escrow_id)(surf_amount) );
 FC_REFLECT( surf::protocol::challenge_authority_operation, (challenger)(challenged)(require_owner) );
 FC_REFLECT( surf::protocol::prove_authority_operation, (challenged)(require_owner) );
 FC_REFLECT( surf::protocol::request_account_recovery_operation, (recovery_account)(account_to_recover)(new_owner_authority)(extensions) );
 FC_REFLECT( surf::protocol::recover_account_operation, (account_to_recover)(new_owner_authority)(recent_owner_authority)(extensions) );
 FC_REFLECT( surf::protocol::change_recovery_account_operation, (account_to_recover)(new_recovery_account)(extensions) );
 FC_REFLECT( surf::protocol::decline_voting_rights_operation, (account)(decline) );
-FC_REFLECT( surf::protocol::claim_reward_balance_operation, (account)(reward_steem)(reward_vests) )
+FC_REFLECT( surf::protocol::claim_reward_balance_operation, (account)(reward_surf)(reward_vests) )
 FC_REFLECT( surf::protocol::delegate_vesting_shares_operation, (delegator)(delegatee)(vesting_shares) );

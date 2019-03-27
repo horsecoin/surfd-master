@@ -10,11 +10,11 @@ namespace surf { namespace protocol {
    struct author_reward_operation : public virtual_operation {
       author_reward_operation(){}
       author_reward_operation( const account_name_type& a, const string& p, const asset& st, const asset& v )
-         :author(a), permlink(p), steem_payout(st), vesting_payout(v){}
+         :author(a), permlink(p), surf_payout(st), vesting_payout(v){}
 
       account_name_type author;
       string            permlink;
-      asset             steem_payout;
+      asset             surf_payout;
       asset             vesting_payout;
    };
 
@@ -114,7 +114,7 @@ namespace surf { namespace protocol {
 
 } } //surf::protocol
 
-FC_REFLECT( surf::protocol::author_reward_operation, (author)(permlink)(steem_payout)(vesting_payout) )
+FC_REFLECT( surf::protocol::author_reward_operation, (author)(permlink)(surf_payout)(vesting_payout) )
 FC_REFLECT( surf::protocol::curation_reward_operation, (curator)(reward)(comment_author)(comment_permlink) )
 FC_REFLECT( surf::protocol::comment_reward_operation, (author)(permlink)(payout) )
 FC_REFLECT( surf::protocol::fill_vesting_withdraw_operation, (from_account)(to_account)(withdrawn)(deposited) )

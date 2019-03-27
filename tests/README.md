@@ -5,7 +5,7 @@
 From the root of the repository:
 
     docker build --rm=false \
-        -t steemitinc/ci-test-environment:latest \
+        -t surfinc/ci-test-environment:latest \
         -f tests/scripts/Dockerfile.testenv .
 
 ## To Run The Tests
@@ -13,13 +13,13 @@ From the root of the repository:
 (Also in the root of the repository.)
 
     docker build --rm=false \
-        -t steemitinc/steem-test \
+        -t surfinc/surf-test \
         -f Dockerfile.test .
 
 ## To Troubleshoot Failing Tests
 
     docker run -ti \
-        steemitinc/ci-test-environment:latest \
+        surfinc/ci-test-environment:latest \
         /bin/bash
 
 Then, inside the container:

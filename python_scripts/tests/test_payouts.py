@@ -81,7 +81,7 @@ def run_surfd_tests( debug_node ):
       print( "Triggering payouts" )
       sys.stdout.flush()
       debug_node.debug_generate_blocks_until( 1467590400 - 3 )
-      rpc = SteemNodeRPC( 'ws://127.0.0.1:8095', '', '' )
+      rpc = SurfNodeRPC( 'ws://127.0.0.1:8095', '', '' )
       ret = rpc.lookup_accounts( '', str( 0xFFFFFFFF ) )
 
       debug_node.debug_generate_blocks( 1 )
@@ -114,7 +114,7 @@ def run_surfd_tests( debug_node ):
       '''
       print( "Printing account reward dump:" )
       sorted_rewards = sorted( account_rewards.items(), key=operator.itemgetter(1) )
-      print( "account, curation_steem" )
+      print( "account, curation_surf" )
       for rew in sorted_rewards:
          print( rew[0] + ', ' + str( rew[1] ) + ', ' + str( vote_count[ rew[0] ] ) )
 

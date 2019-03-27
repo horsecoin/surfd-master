@@ -19,7 +19,7 @@ is a higher level language that many amateur and skilled programmers use. There 
 been community development of Python libraries to make interfacing with a live node easier.
 This plugin closes the gap by allowing a node to be launched programmatically in Python
 in addition to interfacing with the node. This module utilizes community member Xeroc's
-[Python Steem library](https://github.com/xeroc/python-steemlib).
+[Python Surf library](https://github.com/xeroc/python-surflib).
 
 How Do I Use This?
 ------------------

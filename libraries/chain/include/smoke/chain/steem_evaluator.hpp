@@ -1,6 +1,6 @@
 #pragma once
 
-#include <surf/protocol/steem_operations.hpp>
+#include <surf/protocol/surf_operations.hpp>
 
 #include <surf/chain/evaluator.hpp>
 

@@ -118,7 +118,7 @@ Install Homebrew by following the instructions here: http://brew.sh/
         python3-jinja2
 
 Note: brew recently updated to boost 1.61.0, which is not yet supported by
-steem. Until then, this will allow you to install boost 1.60.0.
+surf. Until then, this will allow you to install boost 1.60.0.
 
 *Optional.* To use TCMalloc in LevelDB:
 

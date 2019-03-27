@@ -1,8 +1,8 @@
 #pragma once
 
 #include <surf/protocol/operation_util.hpp>
-#include <surf/protocol/steem_operations.hpp>
-#include <surf/protocol/steem_virtual_operations.hpp>
+#include <surf/protocol/surf_operations.hpp>
+#include <surf/protocol/surf_virtual_operations.hpp>
 
 namespace surf { namespace protocol {
 

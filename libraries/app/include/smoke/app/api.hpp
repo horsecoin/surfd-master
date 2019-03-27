@@ -170,14 +170,14 @@ namespace surf { namespace app {
          application& _app;
    };
 
-   struct steem_version_info
+   struct surf_version_info
    {
-      steem_version_info() {}
-      steem_version_info( fc::string bc_v, fc::string s_v, fc::string fc_v )
-         :blockchain_version( bc_v ), steem_revision( s_v ), fc_revision( fc_v ) {}
+      surf_version_info() {}
+      surf_version_info( fc::string bc_v, fc::string s_v, fc::string fc_v )
+         :blockchain_version( bc_v ), surf_revision( s_v ), fc_revision( fc_v ) {}
 
       fc::string blockchain_version;
-      fc::string steem_revision;
+      fc::string surf_revision;
       fc::string fc_revision;
    };
 
@@ -205,7 +205,7 @@ namespace surf { namespace app {
 
          fc::api_ptr get_api_by_name( const string& api_name )const;
 
-         steem_version_info get_version();
+         surf_version_info get_version();
 
          /// internal method, not exposed via JSON RPC
          void on_api_startup();
@@ -218,7 +218,7 @@ namespace surf { namespace app {
 
 FC_REFLECT( surf::app::network_broadcast_api::transaction_confirmation,
         (id)(block_num)(trx_num)(expired) )
-FC_REFLECT( surf::app::steem_version_info, (blockchain_version)(steem_revision)(fc_revision) )
+FC_REFLECT( surf::app::surf_version_info, (blockchain_version)(surf_revision)(fc_revision) )
 //FC_REFLECT_TYPENAME( fc::ecc::compact_signature );
 //FC_REFLECT_TYPENAME( fc::ecc::commitment_type );
 
